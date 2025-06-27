@@ -12,7 +12,7 @@ API_ID = int(environ.get("API_ID", "28094744"))
 
 API_HASH = environ.get("API_HASH", "a75af4285edc7747c57bb19147ca0b9b")
 
-BOT_TOKEN = environ.get("BOT_TOKEN", "")
+BOT_TOKEN = environ.get("BOT_TOKEN", "7058856750:AAGCcRzc6ndl9Ae7cpbBCfHfYY7l0h6a9eI")
 
 OWNER = int(environ.get("OWNER", "6126688051"))
 
