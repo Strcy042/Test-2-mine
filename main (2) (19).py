@@ -29,6 +29,8 @@ import random
 from pyromod import listen
 from pyrogram import Client, filters
 from pyrogram.types import Message
+from pyrogram.enums import ChatAction
+import asyncio
 from pyrogram.errors import FloodWait
 from pyrogram.errors.exceptions.bad_request_400 import StickerEmojiInvalid
 from pyrogram.types.messages_and_media import message
@@ -286,61 +288,96 @@ async def restart_handler(_, m):
     else:
         await m.reply_text("🚦**STOPPED**🚦", True)
         os.execl(sys.executable, sys.executable, *sys.argv)
-        
 
 @bot.on_message(filters.command("start"))
 async def start(bot, m: Message):
-    user = await bot.get_me()
-    mention = user.mention
-    start_message = await bot.send_message(
-        m.chat.id,
-          f"🌟 Welcome {m.from_user.first_name}! 🌟\n\n"
-    )
+    user = await bot.get_me()
+    mention = user.mention
 
-    await asyncio.sleep(1)
-    await start_message.edit_text(
-            f"🟢 [SECURE SHELL INITIATED]\n"
-            f"🌐 Accessing {user}@stranger.network...\n\n"
-            f"📡 Establishing encrypted link...\n"
-            f"🔐 Authentication token: VALID\n"
-            f"Progress: [░░░░░░░░░░] 0%"
-        )
-    await asyncio.sleep(1)
-    await start_message.edit_text(
-            f"🧠 [NEURAL CORE SYNCING]\n"
-            f"📂 Loading internal modules...\n"
-            f"⚙️ System check: OK\n"
-            f"Progress: [█░░░░░░░░░] 10%"
-        )
-    await asyncio.sleep(1)
-    await start_message.edit_text(
-            f"🔍 [SCAN IN PROGRESS]\n"
-            f"🧬 Matching DNA Signature: `{user}`\n"
-            f"📡 Signal Strength: MAX\n"
-            f"Progress: [███░░░░░░░] 30%"
-        )
-    await asyncio.sleep(1)
-    await start_message.edit_text(
-            f"🛰️ [DATASTREAM INITIATED]\n"
-            f"🗃️ Injecting code modules...\n"
-            f"🔄 Synced with: `STRANGER-CORE`\n"
-            f"Progress: [█████░░░░░] 50%"
-        )
-    await asyncio.sleep(1)
-    await start_message.edit_text(
-            f"🛡️ [SECURITY PROTOCOL]\n"
-            f"✅ Firewall Bypassed\n"
-            f"✅ Two-factor Verified\n"
-            f"Progress: [████████░░] 80%"
-        )
-    await asyncio.sleep(1)
-    await start_message.edit_text(
-    f"✅ [SYSTEM ONLINE]\n"
-    f"💻 Welcome back, Agent {user}!\n"
-    f"🎯 Identity verified, access level: PREMIUM\n"
-    f"Progress: [██████████] 100%"
-)
+    # Typing Action
+    await bot.send_chat_action(m.chat.id, ChatAction.TYPING)
 
+    # Initial Welcome
+    start_message = await bot.send_message(
+        m.chat.id,
+        f"🌟 Welcome {m.from_user.first_name}! 🌟\n\nInitializing..."
+    )
+
+    await asyncio.sleep(1)
+    await start_message.edit_text(
+        f"🟢 [SECURE SHELL INITIATED]\n"
+        f"🌐 Accessing {user.username}@stranger.network...\n"
+        f"📡 Encrypted link...\n"
+        f"🔐 Auth Token: VALID\n"
+        f"Progress: [░░░░░░░░░░] 0%"
+    )
+
+    await asyncio.sleep(1)
+    await start_message.edit_text(
+        f"🧠 [NEURAL CORE SYNCING]\n"
+        f"📂 Loading modules...\n"
+        f"⚙️ System check: OK\n"
+        f"Progress: [█░░░░░░░░░] 10%"
+    )
+
+    await asyncio.sleep(1)
+    await start_message.edit_text(
+        f"🔍 [SCAN IN PROGRESS]\n"
+        f"🧬 Matching DNA: {user.username}\n"
+        f"📡 Signal Strength: MAX\n"
+        f"Progress: [███░░░░░░░] 30%"
+    )
+
+    await asyncio.sleep(1)
+    await start_message.edit_text(
+        f"🛰️ [DATASTREAM INITIATED]\n"
+        f"🗃️ Injecting modules...\n"
+        f"🔄 Synced with: STRANGER-CORE\n"
+        f"Progress: [█████░░░░░] 50%"
+    )
+
+    await asyncio.sleep(1)
+    await start_message.edit_text(
+        f"🛡️ [SECURITY PROTOCOL]\n"
+        f"✅ Firewall: Bypassed\n"
+        f"✅ 2FA: Verified\n"
+        f"Progress: [████████░░] 80%"
+    )
+
+    await asyncio.sleep(1)
+    await start_message.edit_text(
+        f"✅ [SYSTEM ONLINE]\n"
+        f"💻 Welcome back, Agent @{user.username}!\n"
+        f"🎯 Access Level: PREMIUM\n"
+        f"Progress: [██████████] 100%"
+    )
+
+    # Get user's profile photo
+    try:
+        photos = await bot.get_profile_photos(m.from_user.id, limit=1)
+        if photos.total_count > 0:
+            await bot.send_photo(
+                m.chat.id,
+                photo=photos.photos[0].file_id,
+                caption=(
+                    f"👤 <b>User Profile</b>\n"
+                    f"🧑‍💼 Name: <code>{m.from_user.first_name}</code>\n"
+                    f"🔗 Username: @{m.from_user.username if m.from_user.username else 'N/A'}\n"
+                    f"🆔 ID: <code>{m.from_user.id}</code>\n"
+                    f"📃 Bio: <code>{(await bot.get_users(m.from_user.id)).bio or 'No bio set'}</code>"
+                ),
+                parse_mode="html"
+            )
+        else:
+            await m.reply(
+                f"📃 <b>Bio:</b> <code>{(await bot.get_users(m.from_user.id)).bio or 'No bio set'}</code>\n"
+                f"👤 <b>Name:</b> {m.from_user.first_name}\n"
+                f"🔗 <b>Username:</b> @{m.from_user.username if m.from_user.username else 'N/A'}\n"
+                f"🆔 <b>ID:</b> <code>{m.from_user.id}</code>",
+                parse_mode="html"
+            )
+    except Exception as e:
+        await m.reply(f"⚠️ Failed to fetch profile data.\n{e}")
 
     for step in steps:
         await asyncio.sleep(1.2)
