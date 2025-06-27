@@ -295,6 +295,10 @@ async def start(bot, m: Message):
     start_message = await bot.send_message(
         m.chat.id,
           f"🌟 Welcome {m.from_user.first_name}! 🌟\n\n"
+          f"👋 Welcome, {user_name}!\n"
+          f"🆔 ID: {user_id}\n"
+          f"📛 Username: @{username if username != 'N/A' else 'Not Set'}\n"
+          f"📸 Profile photo saved: {'Yes' if photo_path != 'No photo' else 'No'}"\n"
     )
 
     await asyncio.sleep(1)
