@@ -294,25 +294,24 @@ async def start(bot, m: Message):
     user = await bot.get_me()
     mention = f"<a href='https://t.me/{user.username}'>{user.first_name}</a>"
     mention = f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
-
     
-    await m.reply(f"Hi! I'm {mention}")
-    await bot.send_chat_action(m.chat.id, ChatAction.TYPING)
+    await m.reply(f"Hi! I'm {mention}", parse_mode="html")
+    await bot.send_chat_action(m.chat.id, ChatAction.TYPING)
 
-    # Initial Welcome
-    start_message = await bot.send_message(
-        m.chat.id,
-        f"🌟 Welcome {m.from_user.first_name}! 🌟\n\nInitializing..."
-    )
+    # Initial Welcome
+    start_message = await bot.send_message(
+        m.chat.id,
+        f"🌟 Welcome {m.from_user.first_name}! 🌟\n\nInitializing..."
+    )
 
-    await asyncio.sleep(1)
-    await start_message.edit_text(
-        f"🟢 [SECURE SHELL INITIATED]\n"
-        f"🌐 Accessing {user.username}@stranger.network...\n"
-        f"📡 Encrypted link...\n"
-        f"🔐 Auth Token: VALID\n"
-        f"Progress: [░░░░░░░░░░] 0%"
-    )
+    await asyncio.sleep(1)
+    await start_message.edit_text(
+        f"🟢 [SECURE SHELL INITIATED]\n"
+        f"🌐 Accessing {user.username}@stranger.network...\n"
+        f"📡 Encrypted link...\n"
+        f"🔐 Auth Token: VALID\n"
+        f"Progress: [░░░░░░░░░░] 0%"
+    )
 
     await asyncio.sleep(1)
     await start_message.edit_text(
