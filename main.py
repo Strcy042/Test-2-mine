@@ -297,7 +297,6 @@ async def start(bot, m: Message):
 
     
     await m.reply(f"Hi! I'm {mention}")
-    # Typing Action
     await bot.send_chat_action(m.chat.id, ChatAction.TYPING)
 
     # Initial Welcome
