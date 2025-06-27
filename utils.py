@@ -88,17 +88,32 @@ async def progress_bar(current, total, reply, start):
             completed_length = int(current * bar_length / total)
             remaining_length = bar_length - completed_length
 
-            symbol_pairs = [
-                ("◾️", "◽️"),
-                ("⚫️", "⚪️"),
-                ("🔴", "🔵")
-            ]
-            chosen_pair = random.choice(symbol_pairs)
-            completed_symbol, remaining_symbol = chosen_pair
+    symbol_pairs = [
+    ("◾️", "◽️"),
+    ("⚫️", "⚪️"),
+    ("🔴", "🔵"),
+    ("⬛️", "⬜️"),
+    ("🟦", "⬜️")
+]
+chosen_pair = random.choice(symbol_pairs)
+completed_symbol, remaining_symbol = chosen_pair
 
-            progress_bar = completed_symbol * completed_length + remaining_symbol * remaining_length
-            
-            try:
-                await reply.edit (f'`🦋⃪꯭ ─‌⃛┼ 𝞄⃕𝖋𝖋 समय यात्री Sᴛʀᴀɴɢᴇʀ ʙᴏʏs THE BOYS🥵⃝⃝ᬽ꯭ ⃪꯭ \n🙆‍♂️ {progress_bar}\n├👩‍🎓 Progress ➤ | {perc} |\n├👀 Speed ➤ | {sp} |\n├💗 Processed ➤ | {cur} |\n├💬 Size ➤ | {tot} |\n├💢 ETA ➤ | {eta} |\n🦋 Sᴛʀᴀɴɢᴇʀ ʙᴏʏs THE BOYS🥵⃝⃝ᬽ꯭ ⃪꯭ on`')
+progress_bar = completed_symbol * completed_length + remaining_symbol * remaining_length
+
+try:
+    await reply.edit(
+        f"""<code>✨👑 VIP MODE ON 👑✨</code>
+🦋 <b>꧁༒🔥 Sᴛʀᴀɴɢᴇʀ ʙᴏʏs 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 🔥༒꧂</b> 🦋
+
+<b>🧿 PROGRESS :</b>
+{progress_bar}  
+<b>╭─➤ 📊 Percentage :</b> <code>{perc}</code>
+<b>├─➤ ⚡ Speed :</b> <code>{sp}</code>
+<b>├─➤ 📦 Processed :</b> <code>{cur}</code>
+<b>├─➤ 💾 Size :</b> <code>{tot}</code>
+<b>╰─➤ ⏳ ETA :</b> <code>{eta}</code>
+
+<code>⚡ Powered by STRANGER VIP ENGINE ⚡</code>"""
+    )
             except FloodWait as e:
                 time.sleep(e.x)
