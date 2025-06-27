@@ -3,7 +3,8 @@ import time
 import math
 import os
 from pyrogram.errors import FloodWait
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
+
 
 class Timer:
     def __init__(self, time_between=5):
@@ -16,10 +17,9 @@ class Timer:
             return True
         return False
 
-#lets do calculations
-def hrb(value, digits= 2, delim= "", postfix=""):
-    """Return a human-readable file size.
-    """
+
+# Human-readable file size
+def hrb(value, digits=2, delim="", postfix=""):
     if value is None:
         return None
     chosen_unit = "B"
@@ -31,12 +31,11 @@ def hrb(value, digits= 2, delim= "", postfix=""):
             break
     return f"{value:.{digits}f}" + delim + chosen_unit + postfix
 
-def hrt(seconds, precision = 0):
-    """Return a human-readable time delta as a string.
-    """
+
+# Human-readable time
+def hrt(seconds, precision=0):
     pieces = []
     value = timedelta(seconds=seconds)
-    
 
     if value.days:
         pieces.append(f"{value.days}day")
@@ -62,46 +61,56 @@ def hrt(seconds, precision = 0):
     return "".join(pieces[:precision])
 
 
-
+# Timer object
 timer = Timer()
 
+
+# Progress bar function
 async def progress_bar(current, total, reply, start):
     if timer.can_send():
         now = time.time()
         diff = now - start
+
         if diff < 1:
             return
+
+        perc = f"{current * 100 / total:.1f}%"
+        elapsed_time = round(diff)
+        speed = current * 3 / elapsed_time
+        remaining_bytes = total - current
+
+        if speed > 0:
+            eta_seconds = remaining_bytes / speed
+            eta = hrt(eta_seconds, precision=1)
         else:
-            perc = f"{current * 100 / total:.1f}%"
-            elapsed_time = round(diff)
-            speed = current*3 / elapsed_time
-            remaining_bytes = total - current
-            if speed > 0:
-                eta_seconds = remaining_bytes / speed
-                eta = hrt(eta_seconds, precision=1)
-            else:
-                eta = "-"
-            sp = str(hrb(speed)) + "/s"
-            tot = hrb(total)
-            cur = hrb(current)
-            bar_length = 10
-            completed_length = int(current * bar_length / total)
-            remaining_length = bar_length - completed_length
+            eta = "-"
 
-    symbol_pairs = [
-    ("◾️", "◽️"),
-    ("⚫️", "⚪️"),
-    ("🔴", "🔵")
+        sp = str(hrb(speed)) + "/s"
+        tot = hrb(total)
+        cur = hrb(current)
+
+        bar_length = 10
+        completed_length = int(current * bar_length / total)
+        remaining_length = bar_length - completed_length
+
+        symbol_pairs = [
+            ("◾️", "◽️"),
+            ("⚫️", "⚪️"),
+            ("🔴", "🔵")
         ]
-chosen_pair = random.choice(symbol_pairs)
-completed_symbol, remaining_symbol = chosen_pair
 
-progress_bar = completed_symbol * completed_length + remaining_symbol * remaining_length
+        chosen_pair = random.choice(symbol_pairs)
+        completed_symbol, remaining_symbol = chosen_pair
 
-try:
-    await reply.edit(f"""<code>✨👑 VIP MODE ON 👑✨</code>
-    🦋 <b>꧁༒🔥 Sᴛʀᴀɴɢᴇʀ ʙᴏʏs 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 🔥༒꧂</b> 🦋
-    <b>🧿 PROGRESS :</b>{progress_bar}  
+        progress_bar_str = completed_symbol * completed_length + remaining_symbol * remaining_length
+
+        try:
+            await reply.edit(f"""<code>✨👑 VIP MODE ON 👑✨</code>
+
+🦋 <b>꧁༒🔥 Sᴛʀᴀɴɢᴇʀ ʙᴏʏs 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 🔥༒꧂</b> 🦋
+
+<b>🧿 PROGRESS :</b> {progress_bar_str}
+
 <b>╭─➤ 📊 Percentage :</b> <code>{perc}</code>
 <b>├─➤ ⚡ Speed :</b> <code>{sp}</code>
 <b>├─➤ 📦 Processed :</b> <code>{cur}</code>
@@ -109,6 +118,6 @@ try:
 <b>╰─➤ ⏳ ETA :</b> <code>{eta}</code>
 
 <code>⚡ Powered by STRANGER VIP ENGINE ⚡</code>"""
-    )
-            except FloodWait as e:
-                time.sleep(e.x)
+            )
+        except FloodWait as e:
+            time.sleep(e.x)
