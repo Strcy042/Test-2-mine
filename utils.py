@@ -99,7 +99,9 @@ completed_symbol, remaining_symbol = chosen_pair
 progress_bar = completed_symbol * completed_length + remaining_symbol * remaining_length
 
 try:
-    await reply.edit(f"""<code>✨👑 VIP MODE ON 👑✨</code>🦋 <b>꧁༒🔥 Sᴛʀᴀɴɢᴇʀ ʙᴏʏs 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 🔥༒꧂</b> 🦋<b>🧿 PROGRESS :</b>{progress_bar}  
+    await reply.edit(f"""<code>✨👑 VIP MODE ON 👑✨</code>
+    🦋 <b>꧁༒🔥 Sᴛʀᴀɴɢᴇʀ ʙᴏʏs 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 🔥༒꧂</b> 🦋
+    <b>🧿 PROGRESS :</b>{progress_bar}  
 <b>╭─➤ 📊 Percentage :</b> <code>{perc}</code>
 <b>├─➤ ⚡ Speed :</b> <code>{sp}</code>
 <b>├─➤ 📦 Processed :</b> <code>{cur}</code>
