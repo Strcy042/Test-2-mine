@@ -291,9 +291,12 @@ async def restart_handler(_, m):
 
 @bot.on_message(filters.command("start"))
 async def start(bot, m: Message):
-    user = await bot.get_me()
-    mention = user.mention
+    user = await bot.get_me()
+    mention = f"<a href='https://t.me/{user.username}'>{user.first_name}</a>"
+    mention = f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
 
+    
+    await m.reply(f"Hi! I'm {mention}")
     # Typing Action
     await bot.send_chat_action(m.chat.id, ChatAction.TYPING)
 
