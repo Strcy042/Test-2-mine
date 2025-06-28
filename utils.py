@@ -116,6 +116,7 @@ async def progress_bar(current, total, reply, start):
 <b>├─➤ 📦 Processed :</b> <code>{cur}</code>
 <b>├─➤ 💾 Size :</b> <code>{tot}</code>
 <b>╰─➤ ⏳ ETA :</b> <code>{eta}</code>
+<b>├─➤ 📅 Time     :</b> <code> {datetime.now().strftime('%d-%b-%Y %I:%M:%S %p')}</code>
 
 <code>⚡ Powered by STRANGER VIP ENGINE ⚡</code>"""
             )
